@@ -23,7 +23,7 @@
 
 	function currentRoute(): Route | null {
 		let matching = links.filter((v) => {
-			v.href == page.route.id;
+			return v.href == page.route.id;
 		});
 		return matching[0];
 	}
@@ -40,8 +40,15 @@
 	afterNavigate(async function () {
 		let route = currentRoute();
 		let response = await api.getProfile();
-		if (response.response_type != 'Error') {
+		if (response.response_type == 'Error') {
+			if (route?.allowed == 'authenticated') {
+				goto('/login');
+			}
+		} else {
 			loggedIn = true;
+			if (route?.allowed == 'unauthenticated') {
+				goto('/profile');
+			}
 		}
 	});
 
@@ -61,9 +68,11 @@
 		<a class="mx-2 text-xl text-white hover:text-blue-100" href={link.href}>{link.text}</a>
 	{/each}
 	{#if loggedIn}
-		<button class="mx-2 text-xl text-white hover:text-blue-100" onclick={logout}>Logout</button>
+		<button class="mx-2 cursor-pointer text-xl text-white hover:text-blue-100" onclick={logout}
+			>Logout</button
+		>
 	{/if}
 </nav>
-<main class="m-auto max-w-7xl">
+<main class="m-auto max-w-7xl px-2">
 	{@render children?.()}
 </main>

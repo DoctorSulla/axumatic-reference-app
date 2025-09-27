@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { api } from '$lib/api';
-	import { afterNavigate } from '$app/navigation';
+	import GoogleSignIn from '$lib/GoogleSignIn.svelte';
 
 	let email = '';
 	let username = '';
@@ -27,13 +27,6 @@
 		}
 		loading = false;
 	}
-
-	afterNavigate(async function () {
-		let response = await api.getProfile();
-		if (response.response_type != 'Error') {
-			goto('/profile');
-		}
-	});
 </script>
 
 <div class="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
@@ -119,5 +112,7 @@
 				</button>
 			</div>
 		</form>
+
+		<GoogleSignIn />
 	</div>
 </div>

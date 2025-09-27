@@ -4,4 +4,5 @@ export interface Profile {
 	email: string;
 	auth_level: string;
 	identity_provider: string;
+	registration_ts: number;
 }
