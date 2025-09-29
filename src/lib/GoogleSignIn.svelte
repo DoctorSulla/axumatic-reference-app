@@ -5,7 +5,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { api } from '$lib/api';
+	import { goto } from '$app/navigation';
 
+	let error = '';
 	let googleButtonWrapper: HTMLElement;
 
 	onMount(async () => {
@@ -31,8 +33,16 @@
 	});
 
 	async function handleCredentialResponse(response: any) {
-		console.log(response);
+		let request = await api.googleLogin({ jwt: response.credential });
+		if (request.response_type == 'Error') {
+			error = request.message;
+		} else {
+			goto('/profile');
+		}
 	}
 </script>
 
 <div bind:this={googleButtonWrapper}></div>
+{#if error}
+	<div class="text-center text-sm text-red-600">{error}</div>
+{/if}

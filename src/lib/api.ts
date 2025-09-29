@@ -8,6 +8,9 @@ if (dev) {
 
 
 
+export interface GoogleLoginRequest {
+	jwt: string;
+}
 
 export interface LoginRequest {
 	email: string;
@@ -87,6 +90,10 @@ export const api = {
 
 	async login(credentials: LoginRequest): Promise<ApiResponse> {
 		return apiCall('/account/login', 'POST', credentials);
+	},
+
+	async googleLogin(jwt: GoogleLoginRequest): Promise<ApiResponse> {
+		return apiCall('/account/login/google', 'POST', jwt);
 	},
 
 	async logout() {

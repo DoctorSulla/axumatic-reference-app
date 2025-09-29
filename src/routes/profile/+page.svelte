@@ -56,7 +56,7 @@
 		</form>
 
 		{#if error}
-			<div class="text-center text-sm text-red-600">{error}</div>
+			<div class="text-sm text-red-600">{error}</div>
 		{/if}
 	{:else}
 		<p>Email: {email} <span class="text-green-500">&check; Verified</span></p>
