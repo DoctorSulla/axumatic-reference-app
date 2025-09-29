@@ -1,4 +1,13 @@
-const API_BASE_URL = 'http://localhost:3000';
+import { dev } from '$app/environment';
+
+let API_BASE_URL = 'https://api.halliday.dev';
+
+if (dev) {
+	API_BASE_URL = 'http://localhost:3000';
+}
+
+
+
 
 export interface LoginRequest {
 	email: string;
@@ -22,7 +31,6 @@ export interface ChangePasswordRequest {
 	password: string;
 	confirm_password: string;
 }
-
 
 export interface ConfirmPasswordReset {
 	code: string;
@@ -59,7 +67,9 @@ async function apiCall(
 		});
 
 		if (!response.ok) {
-			let error = await response.json().catch(() => { return { response_type: 'Error', message: 'Request failed' } })
+			let error = await response.json().catch(() => {
+				return { response_type: 'Error', message: 'Request failed' };
+			});
 			return error;
 		}
 
@@ -70,9 +80,11 @@ async function apiCall(
 	}
 }
 
-
-
 export const api = {
+	async getNonce(): Promise<ApiResponse> {
+		return apiCall('/nonce', 'GET', null);
+	},
+
 	async login(credentials: LoginRequest): Promise<ApiResponse> {
 		return apiCall('/account/login', 'POST', credentials);
 	},
@@ -105,6 +117,5 @@ export const api = {
 
 	async getProfile(): Promise<ApiResponse> {
 		return apiCall('/account/profile', 'GET', null);
-	},
-
+	}
 };

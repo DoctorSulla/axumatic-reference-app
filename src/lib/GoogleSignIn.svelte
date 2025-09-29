@@ -4,10 +4,13 @@
 
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { api } from '$lib/api';
 
 	let googleButtonWrapper: HTMLElement;
 
-	onMount(() => {
+	onMount(async () => {
+		let response = await api.getNonce();
+		let nonce = response.message;
 		const script = document.createElement('script');
 		script.src = 'https://accounts.google.com/gsi/client';
 		script.async = true;
@@ -15,7 +18,8 @@
 		script.onload = () => {
 			google.accounts.id.initialize({
 				client_id: '988343938519-vle7kps2l5f6cdnjluibda25o66h2jpn.apps.googleusercontent.com',
-				callback: handleCredentialResponse
+				callback: handleCredentialResponse,
+				nonce: nonce
 			});
 			google.accounts.id.renderButton(
 				googleButtonWrapper,
