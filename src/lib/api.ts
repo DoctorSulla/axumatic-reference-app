@@ -46,14 +46,6 @@ export interface ApiResponse {
 	message: string;
 }
 
-export interface User {
-	email: string;
-	username: string;
-	auth_level: string;
-	registration_ts: string;
-	identity_provider: string;
-}
-
 async function apiCall(
 	endpoint: string,
 	method: 'GET' | 'POST' | 'PATCH' | 'POST' | 'DELETE',
